@@ -24,13 +24,17 @@ lazy val kadabra = crossProject.in(file(".")).
       "com.typesafe.akka" %% "akka-http-testkit" % "10.0.10" % Test,
       "de.heikoseeberger" %% "akka-http-circe" % "1.19.0-M2",
       "io.circe" %% "circe-generic" % "0.9.0-M1",
-      "io.circe" %% "circe-java8" % "0.9.0-M1",
       "io.circe" %% "circe-parser" % "0.9.0-M1"
     )
   ).jsSettings(
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.9.1",
-    "be.doeraene" %%% "scalajs-jquery" % "0.9.1"
+    "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
+    "org.akka-js" %%% "akkajsactor" % "1.2.5.4",
+    "org.akka-js" %%% "akkajsactorstream" % "1.2.5.4",
+    "io.circe" %%% "circe-core" % "0.9.0-M1",
+    "io.circe" %%% "circe-generic" % "0.9.0-M1",
+    "io.circe" %%% "circe-parser" % "0.9.0-M1"
   ),
   scalaJSUseMainModuleInitializer := true,
   skip in packageJSDependencies := false,
