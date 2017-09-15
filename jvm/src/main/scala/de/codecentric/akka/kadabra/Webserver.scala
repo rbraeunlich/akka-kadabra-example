@@ -29,7 +29,7 @@ object Webserver extends FailFastCirceSupport {
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
 
-    implicit val guestbook = system.actorOf(Guestbook.props)
+    implicit val guestbook = system.actorOf(Guestbook.props, Guestbook.persistentId)
 
     val route = path("all") {
       get {
