@@ -21,10 +21,12 @@ object Main {
   def main(args: Array[String]): Unit = {
     jQuery("body").append("<h1>✨Akka-kadabra✨</h1>")
     renderInputElements()
+    val retrieveDiv = jQuery("<div>").appendTo(jQuery("body"))
     jQuery("<button type=\"button\" id=\"retrieve-button\">Get guestbook entries</button>")
       .click(() => {
         entryRenderer ! RetrieveEntries
-      }).appendTo(jQuery("body"))
+      }).appendTo(retrieveDiv)
+    jQuery("body").append("<br>")
   }
 
   private def renderInputElements() = {
@@ -33,10 +35,11 @@ object Main {
     inputDiv.append("""Text:<input name="text" id="text" type="text" />""")
     jQuery("<button type=\"button\" id=\"submit-button\">Submit!</button>")
       .click(() => {
-        val author = jQuery("#author").value().toString()
+        val author = jQuery("#author").value().toString
         val text = jQuery("#text").value().toString
         entrySender ! NewEntry(author, text)
         entryRenderer ! RetrieveEntries
       }).appendTo(inputDiv)
+    jQuery("body").append("<br>")
   }
 }
