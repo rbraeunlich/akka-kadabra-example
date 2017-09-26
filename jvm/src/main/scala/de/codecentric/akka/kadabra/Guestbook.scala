@@ -4,8 +4,6 @@ import akka.actor.{Actor, ActorLogging, Props}
 import akka.persistence.{PersistentActor, SnapshotOffer}
 import de.codecentric.akka.kadabra.Guestbook.{AddEntry, GetAll}
 
-import scala.collection.mutable.ArrayBuffer
-
 /**
   * Created by ronny on 15.09.17.
   */
@@ -13,17 +11,17 @@ class Guestbook(id: String) extends PersistentActor with ActorLogging {
 
   override def persistenceId: String = id
 
-  val entries: ArrayBuffer[Entry] = ArrayBuffer()
+  var entries: List[Entry] = List()
 
-  def updateState(add: AddEntry): Unit = entries += add.entry
+  def updateState(add: AddEntry): Unit = entries = entries :+ add.entry
 
   override def receiveRecover: Receive = {
     case add: AddEntry =>
       log.info(s"Recovered event $add")
       updateState(add)
-    case SnapshotOffer(_, snapshot: ArrayBuffer[Entry]) =>
+    case SnapshotOffer(_, snapshot: List[Entry]) =>
       log.info(s"Restored snapshot $snapshot")
-      entries ++= snapshot
+      entries = snapshot
   }
 
   override def receiveCommand: Receive = {

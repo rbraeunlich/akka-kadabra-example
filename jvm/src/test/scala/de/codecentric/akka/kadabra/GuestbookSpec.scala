@@ -5,8 +5,6 @@ import akka.testkit.TestProbe
 import de.codecentric.akka.kadabra.Guestbook.{AddEntry, GetAll}
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 
-import scala.collection.mutable.ArrayBuffer
-
 /**
   * Created by ronny on 15.09.17.
   */
@@ -29,7 +27,7 @@ class GuestbookSpec extends WordSpec with Matchers with PersistenceCleanup with 
       guestbook ! AddEntry(newEntry)
 
       guestbook ! GetAll
-      sender.expectMsg(ArrayBuffer(newEntry))
+      sender.expectMsg(List(newEntry))
     }
 
     "return all entries" in {
@@ -42,7 +40,7 @@ class GuestbookSpec extends WordSpec with Matchers with PersistenceCleanup with 
 
       guestbook ! GetAll
 
-      sender.expectMsg(ArrayBuffer(newEntry, newEntry))
+      sender.expectMsg(List(newEntry, newEntry))
     }
 
     "should save the entries" in {
@@ -53,7 +51,7 @@ class GuestbookSpec extends WordSpec with Matchers with PersistenceCleanup with 
       guestbook ! AddEntry(newEntry)
       // wait until the message arrived
       guestbook ! GetAll
-      sender.expectMsg(ArrayBuffer(newEntry))
+      sender.expectMsg(List(newEntry))
 
       //kill the guestbook
       sender.watch(guestbook)
@@ -64,7 +62,7 @@ class GuestbookSpec extends WordSpec with Matchers with PersistenceCleanup with 
       guestbook = actorSystem.actorOf(Props(new Guestbook("3")))
       guestbook ! GetAll
 
-      sender.expectMsg(ArrayBuffer(newEntry))
+      sender.expectMsg(List(newEntry))
     }
   }
 }
